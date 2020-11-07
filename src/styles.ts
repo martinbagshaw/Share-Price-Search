@@ -4,8 +4,9 @@ interface Colors {
   [key: string]: string;
 }
 const colors: Colors = {
-  blueDark: '#233329',
+  blueDark: '#16202c',
   blueLight: '#3077c1',
+  blueTranslucent: 'rgba(48, 119, 193, 0.1)',//84, 160, 240
   boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.25)',
   green: '#63d471',
   greenDark: '#63a46c',

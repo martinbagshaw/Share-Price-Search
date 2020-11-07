@@ -1,26 +1,11 @@
-import React, { FC, Fragment, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { hot } from 'react-hot-loader';
 declare const module: any;
 
 import { buttonMixin, containerMixin, colors, font } from './styles';
 import Header from './components/Header';
-// TODO:
-// 1. API call and test (stock candles)
-// - get api token
-// - save as an evironment variable
-// - convert company name into something you can enter in a search box
-// - probably need an autocomplete
-// - test this shit
-
-// 2. UI
-// - search bar (and list)
-// - date picker
-// - some sort of charting library
-
-// - prevent re-render of text input
-// - try use memo
-// - split things up well, keep file sizes small
+import { getApi } from './api/getApi';
 
 const Section = styled.section`
   ${containerMixin};
@@ -67,6 +52,7 @@ const SearchBar = styled.input`
   &:focus {
     outline: none;
     border: 1px solid ${colors.blueLight};
+    background-color: ${colors.blueTranslucent};
   }
   @media screen and (min-width: 1024px) {
     font-size: 1.25rem;
@@ -80,6 +66,16 @@ const Submit = styled.input`
 
 const App: FC = (): JSX.Element => {
   const [input, setInput] = useState<string>('');
+  useEffect(() => {
+    getApi('AAPL', 'companyInfo')
+      .then((res) => {
+        console.log('res', res);
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+
+  }, []);
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,6 +85,7 @@ const App: FC = (): JSX.Element => {
   return (
     <Fragment>
       <Header />
+      
       <Section>
         <H2>Search for a company and retrieve its share data:</H2>
         <Form onSubmit={onSubmit}>
