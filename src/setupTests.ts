@@ -1,2 +1,3 @@
-import '@testing-library/jest-dom/extend-expect'
-import "babel-polyfill";
+import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
+import 'babel-polyfill';

@@ -10,17 +10,18 @@ describe('getQuery tests', () => {
   it('getQuery: test candles API', () => {
     const companyCode = 'APPL';
     const apiType = 'candles';
-    const from = '1572651390';
-    const to = '1575243390';
+    const from = 1604169545708;
+    const to = 1604774345708;
     const res = getQuery(companyCode, apiType, from, to);
     expect(res).toEqual(
-      `${api}stock/candle?symbol=${companyCode}&resolution=D&from=${from}&to=${to}&token=${apiKey}`
+      `${api}stock/candle?symbol=${companyCode}&resolution=D&from=1604169545&to=1604774345&token=${apiKey}`
     );
   });
 
   it('getQuery fails with an invalid apiType', () => {
     const companyCode = 'APPL';
     const apiType = 'financial';
+    // @ts-ignore
     const res = getQuery(companyCode, apiType);
     expect(res).toEqual(undefined);
   });

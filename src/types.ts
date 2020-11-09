@@ -1,4 +1,9 @@
-export type CandlesRet = {
+export type ApiRet = {
+  error?: string;
+  response?: CandlesType | CompanyType | Array<NewsType> | FinancialsType | string;
+};
+
+export type CandlesType = {
   c: Array<number>;
   h: Array<number>;
   l: Array<number>;
@@ -7,7 +12,12 @@ export type CandlesRet = {
   t: Array<number>;
 };
 
-export type CompanyRet = {
+export type CandlesTypeReturn = {
+  error?: string | undefined;
+  response?: CandlesType;
+};
+
+export type CompanyType = {
   country: string;
   currency: string;
   exchange: string;
@@ -22,16 +32,37 @@ export type CompanyRet = {
   weburl: string;
 };
 
-export type CandlesObj = {
-  c: Array<number>;
-  h: Array<number>;
-  l: Array<number>;
-  o: Array<number>;
-  s: string;
-  t: Array<number>;
+export type DateRange = {
+  from: number;
+  to: number;
 };
 
-export type NewsObj = {
+type FinancialsItem = {
+  period: string;
+  v: number;
+};
+
+export type FinancialsType = {
+  series: {
+    annual: {
+      currentRatio: FinancialsItem[];
+      salesPerShare: FinancialsItem[];
+      netMargin: FinancialsItem[];
+    };
+  };
+  metric: {
+    '10DayAverageTradingVolume': number;
+    '52WeekHigh': number;
+    '52WeekLow': number;
+    '52WeekLowDate': string;
+    '52WeekPriceReturnDaily': number;
+    beta: number;
+  };
+  metricType: string;
+  symbol: string;
+};
+
+export type NewsType = {
   category: string;
   datetime: number;
   headline: string;
@@ -41,35 +72,6 @@ export type NewsObj = {
   source: string;
   summary: string;
   url: string;
-};
-
-type FinancialsItem = {
-  period: string,
-  v: number,
-};
-export type FinancialsObj = {
-  series: {
-    annual: {
-      currentRatio: FinancialsItem[];
-      salesPerShare: FinancialsItem[];
-      netMargin: FinancialsItem[];
-    },
-  },
-  metric: {
-    '10DayAverageTradingVolume': number,
-    '52WeekHigh': number,
-    '52WeekLow': number,
-    '52WeekLowDate': string,
-    '52WeekPriceReturnDaily': number,
-    beta: number,
-  },
-  metricType: string;
-  symbol: string;
-};
-
-export type CandlesReturn = {
-  error?: string | undefined;
-  response?: CandlesObj;
 };
 
 export type Queries = {

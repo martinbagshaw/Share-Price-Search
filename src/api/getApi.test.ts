@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { cleanup } from '@testing-library/react';
 import { getApi } from './getApi';
-import { candlesRet, newsRet } from './apiTestData';
+import { CandlesType, newsRet } from './apiTestData';
 
 afterEach(() => {
   cleanup();
@@ -29,7 +29,7 @@ describe('getApi tests', () => {
   it('getApi: invalid apiType entered', async () => {
     const companyCode = 'APPL';
     const apiType = 'news';
-    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ response: candlesRet }));
+    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ response: CandlesType }));
 
     // @ts-ignore
     await expect(getApi(companyCode, apiType)).resolves.toEqual({

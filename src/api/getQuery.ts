@@ -1,26 +1,20 @@
 /*
-getQuery.ts
-* Inputs: company code, API query, and to and from date (news and candles API calls)
-* Output: API query string, or undefined
-*/
-
-import dayjs from 'dayjs';
-
+ * getQuery.ts
+ * Inputs: company code, API query, and to and from date (news and candles API calls)
+ * Output: API query string, or undefined
+ */
 import { Queries } from '../types';
+import { formatDate } from './formatDate';
 const apiKey = process.env.API_KEY || 'TEST_API_KEY';
 
 export const getQuery = <C, Q extends keyof Queries>(
   companyCode: C | string,
   query: Q,
-  fromDate?: number | string,
-  toDate?: number | string
+  fromDate?: number,
+  toDate?: number
 ): string | undefined => {
-  let from = fromDate;
-  let to = toDate;
-  if (query === 'companyNews') {
-    from = dayjs(fromDate).format('YYYY-MM-DD');
-    to = dayjs(toDate).format('YYYY-MM-DD');
-  }
+  const from = formatDate(fromDate, query);
+  const to = formatDate(toDate, query);
   const api = 'https://finnhub.io/api/v1/';
   const obj: Queries = {
     candles: `${api}stock/candle?symbol=${companyCode}&resolution=D&from=${from}&to=${to}&token=${apiKey}`,

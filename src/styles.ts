@@ -4,9 +4,10 @@ interface Colors {
   [key: string]: string;
 }
 const colors: Colors = {
+  black: '#000',
   blueDark: '#16202c',
   blueLight: '#3077c1',
-  blueTranslucent: 'rgba(48, 119, 193, 0.1)',//84, 160, 240
+  blueTranslucent: 'rgba(48, 119, 193, 0.1)', //84, 160, 240
   boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.25)',
   green: '#63d471',
   greenDark: '#63a46c',
@@ -14,12 +15,16 @@ const colors: Colors = {
   grey: '#545454',
   greyMid: '#d5d5d5',
   greyLight: '#f2f2f3',
+  red: 'rgb(224, 99, 84)',
+  redLight: 'rgb(255, 227, 224)',
   turquoise: '#69fff1',
   turquoiseDark: '00e0Ca',
-  white: '#ffffff'
-}
+  white: '#ffffff',
+  yellow: 'rgb(252, 187, 84)',
+  yellowLight: 'rgb(255, 246, 221)',
+};
 
-const font: string = '\'Trispace\', Arial, Helvetica, sans-serif';
+const font: string = "'Trispace', Arial, Helvetica, sans-serif";
 
 const containerMixin = css`
   width: 100%;
@@ -32,12 +37,12 @@ const containerMixin = css`
 const buttonMixin = css`
   cursor: pointer;
   border: 0;
-  padding: 0.625rem 1rem;
+  padding: 0.5rem 0.625rem;
   box-sizing: border-box;
   border-radius: 0.25rem;
   font-family: ${font};
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.75rem;
   line-height: 1.4;
   color: ${colors.white};
   background-color: ${colors.blueDark};
@@ -47,9 +52,13 @@ const buttonMixin = css`
   &:active {
     background-color: ${colors.blueLight};
   }
+  @media screen and (min-width: 480px) {
+    font-size: 1rem;
+    padding: 0.625rem 1rem;
+  }
 `;
 const BaseButton = styled.button`
   ${buttonMixin};
 `;
 
-export { colors, font, containerMixin, buttonMixin, BaseButton }
+export { colors, font, containerMixin, buttonMixin, BaseButton };

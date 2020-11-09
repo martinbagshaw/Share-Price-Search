@@ -4,8 +4,10 @@ import Header from './Header';
 
 afterEach(cleanup);
 
-test('renders text', () => {
-  const { getByText } = render(<Header />);
-  const text = getByText('Share Price Finder');
-  expect(text).toBeInTheDocument();
+describe('Header component tests', () => {
+  it('renders text', () => {
+    const { getByText } = render(<Header />);
+    const text = getByText('Share Price Finder:');
+    expect(text).toBeInTheDocument();
+  });
 });
