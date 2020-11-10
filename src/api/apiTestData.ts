@@ -1,4 +1,4 @@
-export const CandlesType = {
+export const candlesTestData = {
   c: [217.68, 221.03, 219.89],
   h: [222.49, 221.5, 220.94],
   l: [217.19, 217.1402, 218.83],
@@ -8,7 +8,7 @@ export const CandlesType = {
   v: [33463820, 24018876, 20730608],
 };
 
-export const CompanyType = {
+export const companyTestData = {
   country: 'US',
   currency: 'USD',
   exchange: 'NASDAQ NMS - GLOBAL MARKET',
@@ -51,9 +51,9 @@ const newsRetObj2 = {
   url: 'https://9to5mac.com/2020/11/06/redesigned-imac-concept/',
 };
 
-export const newsRet = [newsRetObj, newsRetObj2];
+export const newsTestData = [newsRetObj, newsRetObj2];
 
-export const financialsRet = {
+export const financialsTestData = {
   series: {
     annual: {
       currentRatio: [

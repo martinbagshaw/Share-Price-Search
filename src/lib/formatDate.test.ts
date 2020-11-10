@@ -16,4 +16,8 @@ describe('formatDate tests', () => {
     const res = formatDate(1604773831817, 'candles');
     expect(res).toEqual('1604773831');
   });
+  it('formats date for chartUi', () => {
+    const res = formatDate(1604356488441, 'chartUi');
+    expect(res).toEqual('02-11-2020');
+  });
 });

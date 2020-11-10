@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 interface Colors {
   [key: string]: string;
 }
-const colors: Colors = {
+export const colors: Colors = {
   black: '#000',
   blueDark: '#16202c',
   blueLight: '#3077c1',
@@ -24,9 +24,9 @@ const colors: Colors = {
   yellowLight: 'rgb(255, 246, 221)',
 };
 
-const font: string = "'Trispace', Arial, Helvetica, sans-serif";
+export const font: string = "'Trispace', Arial, Helvetica, sans-serif";
 
-const containerMixin = css`
+export const containerMixin = css`
   width: 100%;
   margin: 0 auto;
   padding: 1rem;
@@ -34,7 +34,7 @@ const containerMixin = css`
   max-width: 1200px;
 `;
 
-const buttonMixin = css`
+export const buttonMixin = css`
   cursor: pointer;
   border: 0;
   padding: 0.5rem 0.625rem;
@@ -57,8 +57,23 @@ const buttonMixin = css`
     padding: 0.625rem 1rem;
   }
 `;
-const BaseButton = styled.button`
+
+export const BaseButton = styled.button`
   ${buttonMixin};
 `;
 
-export { colors, font, containerMixin, buttonMixin, BaseButton };
+export const Error = styled.div`
+  width: 100%;
+  background-color: ${colors.redLight};
+  margin-top: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 0.25rem;
+  border: 1px solid ${colors.red};
+  p {
+    font-family: ${font};
+    font-size: 1rem;
+    color: ${colors.red};
+    line-height: 1.4;
+  }
+`;

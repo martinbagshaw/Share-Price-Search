@@ -11,6 +11,9 @@
   "author": "martinbagshaw",
   "license": "ISC",
   "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js"
+    },
     "setupFilesAfterEnv": [
       "<rootDir>/src/setuptests.ts"
     ]
@@ -20,6 +23,7 @@
     "dayjs": "^1.9.5",
     "dotenv": "^8.2.0",
     "react": "^17.0.1",
+    "react-datepicker": "^3.3.0",
     "react-dom": "^17.0.1",
     "styled-components": "^5.2.1"
   },

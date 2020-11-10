@@ -1,1 +1,1 @@
-// declare module 'finnhub';
+declare module 'react-datepicker';

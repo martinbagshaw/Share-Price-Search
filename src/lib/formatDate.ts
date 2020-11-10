@@ -16,5 +16,8 @@ export const formatDate = (date: number | undefined, query: string): string | un
   if (query === 'candles' && date) {
     return dayjs(date).unix().toString();
   }
+  if (query === 'chartUi' && date) {
+    return dayjs(date).format('DD-MM-YYYY');
+  }
   return;
 };

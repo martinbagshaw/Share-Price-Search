@@ -4,7 +4,7 @@
  * Output: API query string, or undefined
  */
 import { Queries } from '../types';
-import { formatDate } from './formatDate';
+import { formatDate } from '../lib/formatDate';
 const apiKey = process.env.API_KEY || 'TEST_API_KEY';
 
 export const getQuery = <C, Q extends keyof Queries>(

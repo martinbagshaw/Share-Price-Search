@@ -1,6 +1,6 @@
 import { cleanup } from '@testing-library/react';
 import { formatNoData } from './formatNoData';
-import { financialsRet } from '../api/apiTestData';
+import { financialsTestData } from '../api/apiTestData';
 
 afterEach(cleanup);
 
@@ -43,7 +43,7 @@ describe('formatNoData tests', () => {
   });
 
   it('valid financials API response: no need to format', () => {
-    const res = formatNoData(financialsRet, 'financials');
-    expect(res).toEqual(financialsRet);
+    const res = formatNoData(financialsTestData, 'financials');
+    expect(res).toEqual(financialsTestData);
   });
 });
