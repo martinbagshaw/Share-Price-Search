@@ -7,6 +7,3 @@ export const usePrevious = (value: any) => {
   }, [value]);
   return ref.current;
 };
-
-// usage:
-// const prevCount = usePrevious(count);

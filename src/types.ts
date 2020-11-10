@@ -80,8 +80,3 @@ export type Queries = {
   companyNews: string;
   financials: string;
 };
-
-export type SearchObject = {
-  companyCode?: string;
-  dateRange: DateRange;
-};

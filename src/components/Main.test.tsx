@@ -5,7 +5,7 @@ import Main from './Main';
 afterEach(cleanup);
 
 test('renders text', () => {
-  const { getByText } = render(<Main />);
-  const text = getByText('Search for a company and retrieve its share data');
+  const { getByLabelText } = render(<Main />);
+  const text = getByLabelText('Search by company code');
   expect(text).toBeInTheDocument();
 });

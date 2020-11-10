@@ -3,7 +3,11 @@ import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { DateRange } from '../types';
+import { usePrevious } from '../lib/usePrevious';
+import { getApi } from '../api/getApi';
+import { formatNoData } from '../lib/formatNoData';
+
+import { CandlesType, CompanyType, DateRange } from '../types';
 import { buttonMixin, colors, font, Error } from '../styles';
 import { fromDate, toDate } from '../lib/defaultDates';
 
@@ -62,63 +66,131 @@ const Submit = styled.input`
   margin-top: 1rem;
 `;
 
-type Func = (companyCode: string, dateRange: DateRange) => void;
 type Props = {
-  apiError?: boolean;
-  getSearchValues: null | Func;
-  onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
-  resetApiError: () => void;
+  setCompanyInfo: React.Dispatch<React.SetStateAction<CompanyType | undefined>>;
+  setDateInfo: React.Dispatch<React.SetStateAction<DateRange>>;
+  setStockInfo: React.Dispatch<React.SetStateAction<CandlesType | undefined>>;
 };
-const SearchForm: FC<Props> = ({ apiError, getSearchValues, onSubmit, resetApiError }): JSX.Element => {
+const SearchForm: FC<Props> = ({
+  setCompanyInfo,
+  setDateInfo,
+  setStockInfo,
+}): JSX.Element => {
   const [company, setCompany] = useState<string>('');
-
   const [startDate, setStartDate] = useState(fromDate);
   const [endDate, setEndDate] = useState(toDate);
-  const [invalid, setInvalid] = useState<string>('');
+  // error messages
+  const [invalidDates, setInvalidDates] = useState<string>('');
+  const [invalidCompany, setInvalidCompany] = useState<string>('');
+  const [apiError, setApiError] = useState<string>('');
+  // guard
+  const [requesting, setRequesting] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (getSearchValues && !company) {
-      setInvalid('please enter a company code');
-    }
-    if (getSearchValues && !invalid && company) {
-      const dates: DateRange = {
-        from: fromDate,
-        to: toDate,
-      };
-      getSearchValues(company, dates);
-    }
-  }, [getSearchValues]);
-
+  // date picker
   useEffect(() => {
     if (startDate > toDate || endDate > toDate) {
-      setInvalid('Starting or ending date cannot be in the future');
+      setInvalidDates('Starting or ending date cannot be in the future');
     } else {
-      setInvalid('');
+      setInvalidDates('');
     }
-  }, [endDate]);
-
-  const emptySubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setInvalid('Please enter a company code');
-  };
+  }, [startDate, endDate]);
 
   const datePickerChange = (dates: string[]) => {
     const [start, end] = dates;
     setStartDate(new Date(start).getTime());
     setEndDate(new Date(end).getTime());
+    setApiError('');
+  };
+
+  // company search
+  useEffect(() => {
+    if (company.length === 1) {
+      setInvalidCompany('');
+    }
+  }, [company]);
+
+  const handleInputChange = (company: string) => {
+    setCompany(company);
+    setApiError('');
+  };
+
+  // form submit
+  const previousCompany = usePrevious(company);
+  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (requesting) return;
+
+    const validate = (): boolean => {
+      if (!company) {
+        setInvalidCompany('Please enter a company code');
+      }
+      if (!company || invalidDates || invalidCompany) {
+        return false;
+      }
+      setRequesting(true);
+      return true;
+    };
+
+    const apiRoute = () => {
+      if (company === previousCompany) {
+        runCandlesApi();
+      }
+      if (company !== previousCompany) {
+        runCandlesApi();
+        runCompanyApi();
+      }
+      setRequesting(false);
+    };
+
+    const passed = validate();
+    if (passed) apiRoute();
+  };
+
+  const runCandlesApi = async () => {
+    const stockError = `No stock data returned. Please check ${company} is a valid company code.`;
+    try {
+      const res = await getApi(company, 'candles', startDate, endDate);
+      const { response } = res;
+      const formatted = formatNoData(response, 'candles');
+      if (formatted) {
+        setStockInfo(formatted);
+        setDateInfo({ from: startDate, to: endDate });
+      } else {
+        setStockInfo(undefined);
+        setApiError(stockError);
+      }
+    } catch (e) {
+      console.log('e', e);
+      setApiError(stockError);
+    }
+  };
+
+  const runCompanyApi = async () => {
+    const companyError = 'No company info returned.';
+    try {
+      const res = await getApi(company, 'companyInfo', startDate, endDate);
+      const { response } = res;
+      const formatted = formatNoData(response, 'companyInfo');
+      if (formatted) {
+        setCompanyInfo(formatted);
+      } else {
+        setCompanyInfo(undefined);
+        setApiError(companyError);
+      }
+    } catch (e) {
+      setApiError(companyError);
+    }
   };
 
   return (
-    <Form data-testid="form" onSubmit={company ? onSubmit : emptySubmit}>
+    <Form data-testid="form" onSubmit={onSubmit}>
       <Label htmlFor="search">Search by company code</Label>
       <SearchBar
         id="search"
         type="search"
         placeholder="Search by company code..."
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-          setCompany(e.target.value);
-          setInvalid('');
-          resetApiError();
+          handleInputChange(e.target.value);
         }}
         value={company}
       />
@@ -134,14 +206,19 @@ const SearchForm: FC<Props> = ({ apiError, getSearchValues, onSubmit, resetApiEr
         inline
       />
       <Submit type="submit" value="Submit" />
-      {invalid && (
+      {invalidDates && (
         <Error>
-          <p>{invalid}</p>
+          <p>{invalidDates}</p>
         </Error>
       )}
-      {apiError && !invalid && (
+      {invalidCompany && (
         <Error>
-          <p>Invalid company code</p>
+          <p>{invalidCompany}</p>
+        </Error>
+      )}
+      {apiError && (
+        <Error>
+          <p>{apiError}</p>
         </Error>
       )}
     </Form>

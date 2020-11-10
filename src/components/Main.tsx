@@ -1,10 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import { DateRange, SearchObject } from '../types';
-import { getApi } from '../api/getApi';
-import { fromDate, toDate } from '../lib/defaultDates';
-import { formatNoData } from '../lib/formatNoData';
 
+import { CandlesType, CompanyType, DateRange } from '../types';
+import { fromDate, toDate } from '../lib/defaultDates';
 import { containerMixin, colors } from '../styles';
 
 import SearchForm from './SearchForm';
@@ -45,89 +43,42 @@ const ColumnContainer = styled.div`
 `;
 
 const Main: FC = (): JSX.Element => {
-  const [stocks, setStocks] = useState<any>(undefined);
-  const [error, setError] = useState<string>('');
-  const [info, setInfo] = useState<any>(undefined);
-  const [requesting, setRequesting] = useState<boolean>(false);
-  const [search, setSearch] = useState<SearchObject>({
-    dateRange: {
-      from: fromDate,
-      to: toDate,
-    },
+  const [stockInfo, setStockInfo] = useState<CandlesType | undefined>(undefined);
+  const [companyInfo, setCompanyInfo] = useState<CompanyType | undefined>(undefined);
+  const [dateInfo, setDateInfo] = useState<DateRange>({
+    from: fromDate,
+    to: toDate,
   });
 
-  const getSearchValues = (companyCode: string, dateRange: DateRange): void => {
 
-    if (companyCode === search.companyCode) {
-      setRequesting(false);
-    }
-    if (companyCode !== search.companyCode) {
-      const newSearch = { ...search };
-      newSearch.companyCode = companyCode;
-      newSearch.dateRange = dateRange;
-      setError('');
-      setRequesting(true);
-      setSearch({ companyCode, dateRange });
-    }
-  };
+  // TODO:
+  // 1. cleanup, fix tests, commit
+  // 2. share panel:
+  // - high, low, average for the week
+  // - some sort of charting library
+  // 3.
+  // - financials and news options
+  // ^ api calls from buttons
 
-  const resetApiError = () => {
-    setError('');
-  }
-
-  const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setRequesting(true);
-  };
-
-  // listen for date change as well
-  useEffect(() => {
-    if (search.companyCode) {
-      runApiCall();
-    }
-  }, [search.companyCode]);
-
-  const runApiCall = async () => {
-    const {
-      companyCode,
-      dateRange: { from, to },
-    } = search;
-
-    try {
-      const res = await getApi(companyCode, 'candles', from, to);
-      const { response } = res;
-      const formatted = formatNoData(response, 'candles');
-      setStocks(formatted);
-    } catch (e) {
-      setError(`No stock data returned. Please check ${companyCode} is valid`);
-    }
-    try {
-      const res = await getApi(companyCode, 'companyInfo', from, to);
-      const { response } = res;
-      const formatted = formatNoData(response, 'companyInfo');
-      setInfo(formatted);
-    } catch (e) {
-      setError(`No company info returned.`);
-    }
-  };
+  // THEN
+  // - answer questions in answers-to-technical-questions.md
 
   return (
     <Page>
       <LeftColumn>
         <ColumnContainer>
           <SearchForm
-            apiError={(error && typeof error === 'string') || (info && typeof info === 'string')}
-            onSubmit={onSubmit}
-            getSearchValues={requesting ? getSearchValues : null}
-            resetApiError={resetApiError}
+            setCompanyInfo={setCompanyInfo}
+            setDateInfo={setDateInfo}
+            setStockInfo={setStockInfo}
           />
-          {info && typeof info !== 'string' && <CompanyInfo {...info} />}
+          {companyInfo && <CompanyInfo {...companyInfo} />}
         </ColumnContainer>
       </LeftColumn>
       <RightColumn>
         <ColumnContainer>
-          {stocks && typeof stocks !== 'string' && (
-            <ShareInfo search={search} stocks={stocks} />
+          {stockInfo && companyInfo && (
+            <ShareInfo companyInfo={companyInfo} dateInfo={dateInfo} stockInfo={stockInfo} />
           )}
         </ColumnContainer>
       </RightColumn>

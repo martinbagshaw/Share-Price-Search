@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-import { CandlesType, SearchObject } from '../types';
+import { CandlesType, CompanyType, DateRange } from '../types';
 import { formatDate } from '../lib/formatDate';
 import { buttonMixin, colors, font } from '../styles';
 
@@ -45,52 +45,28 @@ const Toggle = styled.input`
   margin-top: 1rem;
 `;
 
-// TODO:
-// - averages
-// - chart view
-// - toggle func
 type Props = {
-  search: SearchObject;
-  stocks: CandlesType;
+  companyInfo: CompanyType;
+  dateInfo: DateRange;
+  stockInfo: CandlesType;
 };
-const ShareInfo: FC<Props> = ({ search, stocks }): JSX.Element => {
-  const from = formatDate(search.dateRange.from, 'chartUi');
-  const to = formatDate(search.dateRange.to, 'chartUi');
+const ShareInfo: FC<Props> = ({ companyInfo, dateInfo, stockInfo }): JSX.Element => {
+  const from = formatDate(dateInfo.from, 'chartUi');
+  const to = formatDate(dateInfo.to, 'chartUi');
 
   return (
     <ShareContainer>
       <Heading>
-        <H2>Showing data for: <strong>{search.companyCode}</strong></H2>
+        <H2>
+          Showing data for: <strong>{companyInfo.ticker}</strong>
+        </H2>
         <Dates>
           Date range: <strong>{from}</strong> to <strong>{to}</strong>
         </Dates>
       </Heading>
-      {JSON.stringify(stocks, null, 2)}
+      {JSON.stringify(stockInfo, null, 2)}
     </ShareContainer>
   );
 };
 
 export default ShareInfo;
-
-{
-  /* https://www.tradingview.com/widget/advanced-chart/ */
-}
-
-{
-  /* https://finnhub.io/api/v1/stock/metric?symbol=AAPL&metric=all&token=buik82748v6rtf2l9psg */
-}
-{
-  /* https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=D&from=1572651390&to=1575243390&token=buik82748v6rtf2l9psg */
-}
-
-{
-  /* <iframe
-// src=""
-
-src="https://widget.finnhub.io/widgets/stocks/chart?symbol=IBM&amp;metric=all&amp;from=1572651390&amp;to=1575243390&amp;token=buik82748v6rtf2l9psg&amp;watermarkColor=%231db954&amp;backgroundColor=%23222222&amp;textColor=white"
-width="100%"
-max-width="1200"
-height="400"
-frameBorder="0"
-></iframe> */
-}
