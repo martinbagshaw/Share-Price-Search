@@ -5,23 +5,28 @@ interface Colors {
 }
 export const colors: Colors = {
   black: '#000',
+  blue: '#3077c1',
+  blueLight: '#6fb4fc',
   blueDark: '#16202c',
-  blueLight: '#3077c1',
   blueTranslucent: 'rgba(48, 119, 193, 0.1)', //84, 160, 240
   boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.25)',
   green: '#63d471',
-  greenDark: '#63a46c',
-  greenOlive: '#6a7152',
+  greenLight: '#adffb8',
   grey: '#545454',
   greyMid: '#d5d5d5',
   greyLight: '#f2f2f3',
   red: 'rgb(224, 99, 84)',
   redLight: 'rgb(255, 227, 224)',
-  turquoise: '#69fff1',
-  turquoiseDark: '00e0Ca',
   white: '#ffffff',
-  yellow: 'rgb(252, 187, 84)',
-  yellowLight: 'rgb(255, 246, 221)',
+};
+
+export const chartColors = {
+  max: colors.green,
+  maxLight: colors.greenLight,
+  average: colors.blue,
+  averageLight: colors.blueLight,
+  min: colors.red,
+  minLight: colors.redLight,
 };
 
 export const font: string = "'Trispace', Arial, Helvetica, sans-serif";
@@ -50,7 +55,7 @@ export const buttonMixin = css`
   &:hover,
   &:focus,
   &:active {
-    background-color: ${colors.blueLight};
+    background-color: ${colors.blue};
   }
   @media screen and (min-width: 480px) {
     font-size: 1rem;
@@ -60,6 +65,17 @@ export const buttonMixin = css`
 
 export const BaseButton = styled.button`
   ${buttonMixin};
+`;
+
+export const headingMixin = css`
+  font-family: ${font};
+  font-weight: 200;
+  color: ${colors.blueDark};
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  strong {
+    font-weight: 500;
+  }
 `;
 
 export const Error = styled.div`

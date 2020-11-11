@@ -6,7 +6,7 @@
 import { CandlesType, CompanyType, FinancialsType, NewsType, Queries } from '../types';
 
 // TODO:
-// - input should determin output type
+// - input should determine output type (Generics)
 // - see App.tsx, used 'any' type to override
 export const formatNoData = (
   data: any,

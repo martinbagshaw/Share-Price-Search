@@ -48,7 +48,7 @@ const SearchBar = styled.input`
   border: 1px solid ${colors.greyMid};
   &:focus {
     outline: none;
-    border: 1px solid ${colors.blueLight};
+    border: 1px solid ${colors.blue};
     background-color: ${colors.blueTranslucent};
   }
   @media screen and (min-width: 480px) {
@@ -67,11 +67,13 @@ const Submit = styled.input`
 `;
 
 type Props = {
+  resetParent: () => void;
   setCompanyInfo: React.Dispatch<React.SetStateAction<CompanyType | undefined>>;
   setDateInfo: React.Dispatch<React.SetStateAction<DateRange>>;
   setStockInfo: React.Dispatch<React.SetStateAction<CandlesType | undefined>>;
 };
 const SearchForm: FC<Props> = ({
+  resetParent,
   setCompanyInfo,
   setDateInfo,
   setStockInfo,
@@ -123,6 +125,7 @@ const SearchForm: FC<Props> = ({
     const validate = (): boolean => {
       if (!company) {
         setInvalidCompany('Please enter a company code');
+        resetParent();
       }
       if (!company || invalidDates || invalidCompany) {
         return false;
@@ -147,7 +150,7 @@ const SearchForm: FC<Props> = ({
   };
 
   const runCandlesApi = async () => {
-    const stockError = `No stock data returned. Please check ${company} is a valid company code.`;
+    const stockError = `No stock data returned. Please check '${company}' is a valid company code.`;
     try {
       const res = await getApi(company, 'candles', startDate, endDate);
       const { response } = res;
@@ -160,7 +163,6 @@ const SearchForm: FC<Props> = ({
         setApiError(stockError);
       }
     } catch (e) {
-      console.log('e', e);
       setApiError(stockError);
     }
   };
@@ -175,7 +177,6 @@ const SearchForm: FC<Props> = ({
         setCompanyInfo(formatted);
       } else {
         setCompanyInfo(undefined);
-        setApiError(companyError);
       }
     } catch (e) {
       setApiError(companyError);

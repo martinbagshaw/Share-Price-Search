@@ -47,9 +47,3 @@ used it.
 ever had to do this?
 - 
 Please describe yourself using JSON.
-
----
-
-https://finnhub.io/docs/api#introduction
-https://www.npmjs.com/package/finnhub
-https://finnhub.io/docs/api#stock-candles

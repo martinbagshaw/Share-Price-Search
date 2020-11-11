@@ -30,7 +30,7 @@ const H1 = styled.h1`
 const P = styled.p`
   font-family: ${font};
   font-size: 0.875rem;
-  color: ${colors.blueLight};
+  color: ${colors.blue};
 `;
 
 const Header: FC = (): JSX.Element => (

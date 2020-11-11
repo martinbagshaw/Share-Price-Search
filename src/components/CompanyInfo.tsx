@@ -43,8 +43,9 @@ const H2 = styled.h2`
 const H3 = styled.h3`
   font-family: ${font};
   font-weight: 500;
-  font-size: 1.125rem;
   color: ${colors.black};
+  line-height: 1.4;
+  font-size: 1.125rem;
   margin-bottom: 0.5rem;
 `;
 
@@ -55,13 +56,17 @@ const Details = styled.ul`
 
 const Ul = styled.ul`
   list-style: none;
+  padding-top: 0.5rem;
 `;
 const Li = styled.li`
+  grid-template-columns: repeat(2, 1fr);
+  display: grid;
   font-family: ${font};
   font-weight: 200;
   font-size: 0.875rem;
   color: ${colors.black};
-  margin-bottom: 0.25rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
   strong {
     font-weight: 500;
     margin-right: 0.5rem;
@@ -88,22 +93,22 @@ const Search: FC<CompanyType> = ({
       <Ul>
         <Li>
           <strong>Country:</strong>
-          {country}
+          <span>{country}</span>
         </Li>
         <Li>
           <strong>Currency</strong>
-          {currency}
+          <span>{currency}</span>
         </Li>
         <Li>
           <strong>Exchange:</strong>
-          {exchange}
+          <span>{exchange}</span>
         </Li>
         <Li>
           <strong>Industry:</strong>
-          {finnhubIndustry}
+          <span>{finnhubIndustry}</span>
         </Li>
         <Li>
-          <strong>Public Incorporation:</strong> {ipo}
+          <strong>Public Incorporation:</strong> <span>{ipo}</span>
         </Li>
       </Ul>
     </Details>

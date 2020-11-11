@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render } from '@testing-library/react';
 
 import ShareInfo from './ShareInfo';
-import { candlesTestData, companyTestData } from '../api/apiTestData';
+import { companyTestData } from '../api/apiTestData';
 
 afterEach(cleanup);
 
@@ -12,12 +12,12 @@ const dateInfo = {
 };
 
 describe('ShareInfo component tests', () => {
-  it('renders text', () => {
+  it('renders company code', () => {
     const { getByText } = render(
+      // @ts-ignore
       <ShareInfo
         companyInfo={companyTestData}
         dateInfo={dateInfo}
-        stockInfo={candlesTestData}
       />
     );
     const text = getByText('AAPL');

@@ -28,9 +28,10 @@ const RightColumn = styled.div`
 
 const LeftColumn = styled(RightColumn)`
   background-color: ${colors.blueTranslucent};
+  height: 100%;
+  min-height: 100vh;
   @media screen and (min-width: 768px) {
     border-right: 1px solid ${colors.blueDark};
-    height: 100vh;
     justify-content: flex-end;
   }
 `;
@@ -50,24 +51,16 @@ const Main: FC = (): JSX.Element => {
     to: toDate,
   });
 
-
-  // TODO:
-  // 1. cleanup, fix tests, commit
-  // 2. share panel:
-  // - high, low, average for the week
-  // - some sort of charting library
-  // 3.
-  // - financials and news options
-  // ^ api calls from buttons
-
-  // THEN
-  // - answer questions in answers-to-technical-questions.md
-
+  const resetParent = () => {
+    setStockInfo(undefined)
+    setCompanyInfo(undefined)
+  }
   return (
     <Page>
       <LeftColumn>
         <ColumnContainer>
           <SearchForm
+            resetParent={resetParent}
             setCompanyInfo={setCompanyInfo}
             setDateInfo={setDateInfo}
             setStockInfo={setStockInfo}

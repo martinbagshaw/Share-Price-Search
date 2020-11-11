@@ -1,16 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 
+import ShareChart from './ShareChart';
 import { CandlesType, CompanyType, DateRange } from '../types';
 import { formatDate } from '../lib/formatDate';
-import { buttonMixin, colors, font } from '../styles';
+import { formatSharePrice } from '../lib/formatSharePrice';
+import { colors, chartColors, font, headingMixin } from '../styles';
 
 const ShareContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Heading = styled.section`
+const Heading = styled.header`
   border-bottom: 1px solid ${colors.blueDark};
   padding-bottom: 1rem;
   box-sizing: border-box;
@@ -18,31 +20,32 @@ const Heading = styled.section`
 `;
 
 const H2 = styled.h2`
-  font-family: ${font};
-  font-weight: 200;
-  color: ${colors.blueDark};
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
-  strong {
-    font-weight: 500;
-  }
+  ${headingMixin};
 `;
 
-const Dates = styled.p`
+const Paragraph = styled.p`
   font-family: ${font};
   font-weight: 200;
   font-size: 1rem;
   color: ${colors.blueDark};
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
   strong {
     font-weight: 500;
   }
 `;
 
-const Toggle = styled.input`
-  ${buttonMixin};
-  align-self: flex-end;
-  margin-top: 1rem;
+const Section = styled.section`
+  padding: 1rem 0;
+  box-sizing: border-box;
+`;
+
+const H3 = styled.h3`
+  ${headingMixin};
+  font-size: 1.125rem;
+`;
+
+const Stat = styled.strong<{itemColor: string}>`
+  ${({ itemColor }) => itemColor && `color: ${itemColor}`};
 `;
 
 type Props = {
@@ -53,6 +56,7 @@ type Props = {
 const ShareInfo: FC<Props> = ({ companyInfo, dateInfo, stockInfo }): JSX.Element => {
   const from = formatDate(dateInfo.from, 'chartUi');
   const to = formatDate(dateInfo.to, 'chartUi');
+  const shareStats = useMemo(() => formatSharePrice(stockInfo), [stockInfo]);
 
   return (
     <ShareContainer>
@@ -60,11 +64,21 @@ const ShareInfo: FC<Props> = ({ companyInfo, dateInfo, stockInfo }): JSX.Element
         <H2>
           Showing data for: <strong>{companyInfo.ticker}</strong>
         </H2>
-        <Dates>
+        <Paragraph>
           Date range: <strong>{from}</strong> to <strong>{to}</strong>
-        </Dates>
+        </Paragraph>
       </Heading>
-      {JSON.stringify(stockInfo, null, 2)}
+      {shareStats && (
+        <Section>
+          <H3>Statistics:</H3>
+          {Object.entries(shareStats).map(([key, value]) => (
+            <Paragraph key={key}>
+              {key}: <Stat itemColor={chartColors[key]}>{value}</Stat>
+            </Paragraph>
+          ))}
+          <ShareChart stockInfo={stockInfo} />
+        </Section>
+      )}
     </ShareContainer>
   );
 };

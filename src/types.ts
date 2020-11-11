@@ -10,6 +10,7 @@ export type CandlesType = {
   o: Array<number>;
   s: string;
   t: Array<number>;
+  v: Array<number>;
 };
 
 export type CandlesTypeReturn = {
