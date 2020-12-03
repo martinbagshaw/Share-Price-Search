@@ -1,13 +1,12 @@
 # Share Price Search
-> A technical test
+> A technical test. View at [martinbagshaw.github.io/Share-Price-Search](https://martinbagshaw.github.io/Share-Price-Search)
 
 Develop a simple Single Page Application (SPA) that allows a user to
 retrieve a weeks’ worth of historical share price data for a specified
 company.
 
 ## Challenge
-- Use the publicly available API at Finn Hub (https://finnhub.io/docs/api#
-stock-candles)
+- Use the publicly available API at [Finn Hub](https://finnhub.io/docs/api#stock-candles)
 - The SPA should display the selected date range, the company name
 and the minimum, maximum and average share price over the selected
 week.
