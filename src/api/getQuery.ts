@@ -5,7 +5,7 @@
  */
 import { Queries } from '../types';
 import { formatDate } from '../lib/formatDate';
-const apiKey = process.env.API_KEY || 'TEST_API_KEY';
+const apiKey = process.env.API_KEY || process.env.ACCESS_TOKEN || 'TEST_API_KEY';
 
 export const getQuery = <C, Q extends keyof Queries>(
   companyCode: C | string,
