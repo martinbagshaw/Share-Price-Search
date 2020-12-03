@@ -5,6 +5,8 @@ Develop a simple Single Page Application (SPA) that allows a user to
 retrieve a weeks’ worth of historical share price data for a specified
 company.
 
+![share price search](share-price-search-ui.png)
+
 ## Challenge
 - Use the publicly available API at [Finn Hub](https://finnhub.io/docs/api#stock-candles)
 - The SPA should display the selected date range, the company name

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html",
+    "build": "parcel build src/index.html --public-url https://martinbagshaw.github.io/Share-Price-Search/",
     "test": "jest --watchAll --coverage",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
