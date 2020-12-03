@@ -743,4 +743,4 @@ var e=require("./_createFind"),r=require("./findIndex"),d=e(r);module.exports=d;
 },{"react":"n8MK","react-hot-loader":"aVip","./components/Header":"tmV9","./components/Main":"Izf3"}],"Focm":[function(require,module,exports) {
 "use strict";var e=u(require("react")),r=u(require("react-dom")),t=u(require("./App"));function u(e){return e&&e.__esModule?e:{default:e}}r.default.render(e.default.createElement(t.default,null),document.getElementById("root"));
 },{"react":"n8MK","react-dom":"NKHc","./App":"NHn6"}]},{},["Focm"], null)
-//# sourceMappingURL=/src.ff6ef0aa.js.map
+//# sourceMappingURL=https://martinbagshaw.github.io/Share-Price-Search/src.ff6ef0aa.js.map
