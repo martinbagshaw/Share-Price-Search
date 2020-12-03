@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { usePrevious } from '../lib/usePrevious';
+// import { usePrevious } from '../lib/usePrevious';
 import { getApi } from '../api/getApi';
 import { formatNoData } from '../lib/formatNoData';
 
@@ -90,7 +90,10 @@ const SearchForm: FC<Props> = ({
 
   // date picker
   useEffect(() => {
-    if (startDate > toDate || endDate > toDate) {
+    if (new Date(startDate).toDateString() === new Date(toDate).toDateString()) {
+      setInvalidDates('Starting and ending date are the same');
+      return;
+    } else if (startDate > toDate || endDate > toDate) {
       setInvalidDates('Starting or ending date cannot be in the future');
     } else {
       setInvalidDates('');
@@ -116,8 +119,7 @@ const SearchForm: FC<Props> = ({
     setApiError('');
   };
 
-  // form submit
-  const previousCompany = usePrevious(company);
+  // form submit 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (requesting) return;
@@ -134,14 +136,12 @@ const SearchForm: FC<Props> = ({
       return true;
     };
 
+    // const previousCompany = usePrevious(company);
     const apiRoute = () => {
-      if (company === previousCompany) {
-        runCandlesApi();
-      }
-      if (company !== previousCompany) {
-        runCandlesApi();
-        runCompanyApi();
-      }
+      // previously:
+      // - if company is the same as previous, just runCandlesApi
+      runCandlesApi();
+      runCompanyApi();
       setRequesting(false);
     };
 
@@ -150,7 +150,7 @@ const SearchForm: FC<Props> = ({
   };
 
   const runCandlesApi = async () => {
-    const stockError = `No stock data returned. Please check '${company}' is a valid company code.`;
+    const stockError = `No stock data returned. Please check that '${company}' is a valid company code, and that you have entered a valid date range.`;
     try {
       const res = await getApi(company, 'candles', startDate, endDate);
       const { response } = res;
@@ -159,6 +159,7 @@ const SearchForm: FC<Props> = ({
         setStockInfo(formatted);
         setDateInfo({ from: startDate, to: endDate });
       } else {
+        console.log('B');
         setStockInfo(undefined);
         setApiError(stockError);
       }
