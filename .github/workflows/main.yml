@@ -27,12 +27,13 @@ jobs:
         run: |
           npm install
           npm run build
+        env:
+          ACCESS_TOKEN: ${{ secrets.API_KEY }}
       # Runs a set of commands using the runners shell
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.SHARE_PRICE_SEARCH_DEPLOY }}
-          ACCESS_TOKEN: ${{ secrets.API_KEY }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: dist # The folder the action should deploy.
           CLEAN: true # Automatically remove deleted files from the deploy branch
